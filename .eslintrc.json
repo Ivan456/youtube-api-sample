@@ -1,0 +1,3 @@
+{
+    "extends": ["myschneider", "react-app"]
+}

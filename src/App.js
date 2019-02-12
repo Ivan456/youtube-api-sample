@@ -1,28 +1,45 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import SearchBox from './components/SearchBox';
+import List from './components/List';
+import Spinner from './components/Spinner';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import search from './service/search';
+import ErrorHandler from './components/ErrorHandler';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+    constructor (props) {
+        super(props);
+        this.state = { searchResult: { list: [] }, error: null };
+    }
+
+    handleSearchResult = (searchResult) => {
+        this.setState({ searchResult });
+    }
+
+    handleError = (error) => {
+        this.setState({ error });
+    }
+
+    render () {
+        return (
+            <div className="container">
+                <h1 className="text-center display-4">Video Search App</h1>
+                <SearchBox
+                    search={search}
+                    handleSearchResult={this.handleSearchResult}
+                    loader={<Spinner/>}
+                    handleError={this.handleError}
+                />
+                <List
+                    search={search}
+                    searchResult={this.state.searchResult}
+                    loader={<Spinner/>}
+                    handleError={this.handleError}
+                />
+                <ErrorHandler error={this.state.error}/>
+            </div>
+        );
+    }
 }
 
 export default App;
